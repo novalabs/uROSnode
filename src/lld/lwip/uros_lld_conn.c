@@ -47,9 +47,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <lwip/mem.h>
 #include <lwip/memp.h>
 #include <lwip/api.h>
+#include <lwip/prot/ip.h>
+#include <lwip/prot/ip4.h>
+#include <lwip/ip.h>
 #include <lwip/inet_chksum.h>
 #include <lwip/tcpip.h>
-#include <lwip/tcp_impl.h>
+#include <lwip/tcp.h>
 #include <lwip/stats.h>
 
 #include <string.h>
@@ -87,7 +90,7 @@ uros_err_t uros_lld_hostnametoip(const UrosString *hostnamep,
 
   err_t err;
   char *hostnameszp;
-  struct ip_addr addr;
+  ip_addr_t addr;
 
   urosAssert(urosStringNotEmpty(hostnamep));
   urosAssert(ipp != NULL);
@@ -189,7 +192,7 @@ uros_err_t uros_lld_conn_create(UrosConn *cp, uros_connproto_t protocol) {
  */
 uros_err_t uros_lld_conn_bind(UrosConn *cp, const UrosAddr *locaddrp) {
 
-  struct ip_addr locaddr;
+  ip_addr_t locaddr;
 
   urosAssert(urosConnIsValid(cp));
   urosAssert(locaddrp != NULL);
@@ -283,7 +286,7 @@ uros_err_t uros_lld_conn_listen(UrosConn *cp, uros_cnt_t backlog) {
  */
 uros_err_t uros_lld_conn_connect(UrosConn *cp, const UrosAddr *remaddrp) {
 
-  struct ip_addr addr;
+  ip_addr_t addr;
 
   urosAssert(urosConnIsValid(cp));
   urosAssert(remaddrp != NULL);

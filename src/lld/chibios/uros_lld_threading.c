@@ -80,7 +80,7 @@ void uros_lld_sem_objectinit(UrosSem *semp, uros_cnt_t n) {
 
   urosAssert(semp != NULL);
 
-  chSemInit(semp, n);
+  chSemObjectInit(semp, n);
 }
 
 /**
@@ -176,7 +176,7 @@ void uros_lld_mutex_objectinit(UrosMutex *mtxp) {
 
   urosAssert(mtxp != NULL);
 
-  chMtxInit(mtxp);
+  chMtxObjectInit(mtxp);
 }
 
 /**
@@ -226,15 +226,10 @@ void uros_lld_mutex_lock(UrosMutex *mtxp) {
  *          Pointer to a locked @p UrosMutex object.
  */
 void uros_lld_mutex_unlock(UrosMutex *mtxp) {
-
-  UrosMutex *unlocked;
-  (void)unlocked;
-  (void)mtxp;
-
   urosAssert(mtxp != NULL);
 
-  unlocked = chMtxUnlock();
-  urosAssert(unlocked == mtxp);
+  chMtxUnlock(mtxp);
+
 }
 
 /** @} */
@@ -257,7 +252,7 @@ void uros_lld_condvar_objectinit(UrosCondVar *cvp) {
 
   urosAssert(cvp != NULL);
 
-  chCondInit(cvp);
+  chCondObjectInit(cvp);
 }
 
 /**
@@ -349,7 +344,7 @@ void uros_lld_condvar_broadcast(UrosCondVar *cvp) {
  */
 UrosThreadId uros_lld_thread_self(void) {
 
-  return chThdSelf();
+  return chThdGetSelfX();
 }
 
 /**
@@ -588,7 +583,7 @@ uint32_t uros_lld_threading_gettimestampmsec(void) {
 #if CH_FREQUENCY == 1000
   return (uint32_t)chTimeNow();
 #else
-  return (((uint32_t)chTimeNow() - 1) * 1000) / CH_FREQUENCY + 1;
+  return (((uint32_t)chVTGetSystemTimeX() - 1) * 1000) / CH_CFG_ST_FREQUENCY + 1;
 #endif
 }
 

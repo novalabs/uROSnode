@@ -138,7 +138,7 @@ void uros_lld_mempool_objectinit(UrosMemPool *poolp, size_t blocksize,
   urosAssert(poolp != NULL);
   urosAssert(blocksize > 0);
 
-  chPoolInit(poolp, blocksize, (memgetfunc_t)allocator);
+  chPoolObjectInit(poolp, blocksize, (memgetfunc_t)allocator);
 }
 
 /**
